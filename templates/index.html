@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Chatbot</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>YouTube Chatbot</h1>
+        <p>Ask questions about a YouTube video.</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            <input type="hidden" name="action" value="load_video">
+
+            <label>YouTube Video ID</label>
+            <input type="text" name="video_id"
+                   placeholder="Example: 2oDa-Q8Eqtk"
+                   value="{{ video_id }}" required>
+
+            <button type="submit">Fetch Transcript</button>
+        </form>
+
+        {% if video_id %}
+            <form method="POST">
+                <input type="hidden" name="action" value="ask">
+
+                <label>Your question</label>
+                <input type="text" name="question"
+                       placeholder="Ask about the video"
+                       value="{{ question }}" required>
+
+                <button type="submit">Ask Ollama</button>
+            </form>
+        {% endif %}
+
+        {% if transcript %}
+            <h3>Transcript</h3>
+            <p>{{ transcript }}</p>
+        {% endif %}
+
+        {% if answer %}
+            <section class="message">
+                <h3>Answer</h3>
+                <p>{{ answer }}</p>
+            </section>
+        {% endif %}
+    </main>
+</body>
+</html>
